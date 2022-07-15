@@ -1,9 +1,9 @@
-import os
-
 from selene.core import command
-from selene.core.entity import Element
+from selene.core.entity import Element, Collection
 from selene.support.conditions import have
 from selene.support.shared import browser
+
+from qaguru_py_6_page_object.helpers import resource, upload_resource
 
 NAME_OF_MONTH = {
     "01": "January",
@@ -28,7 +28,10 @@ def test_student_registration_form():
     browser.element('#firstName').type('Nick')
     browser.element('#lastName').type('Ivanov')
     browser.element('#userEmail').type('a@a.com')
-    browser.element('[for = gender-radio-1]').click()
+
+    GENDER_MALE: str = '[for = gender-radio-1]'
+    browser.element(GENDER_MALE).click()
+
     browser.element("#userNumber").type("1234567890")
 
     browser.element('#dateOfBirthInput').click()
@@ -55,21 +58,27 @@ def test_student_registration_form():
         .element_by(have.text(str(int(birth_day[:2])))).click()
     )
 
-    browser.element("#subjectsInput").click().type('Maths')
+    browser.element("#subjectsInput").type('Maths').press_enter()
+    browser.element("#subjectsInput").type('Chemistry')
     browser.element('#react-select-2-option-0').click()
 
     browser.element('#submit').perform(command.js.scroll_into_view)
 
-    SET_HOBBIES_SPORT: str = '[for = hobbies-checkbox-1]'
-    browser.element(SET_HOBBIES_SPORT).click()
-
-    ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    hobby_sport: str = '[for = hobbies-checkbox-1]'
+    browser.element('#hobbiesWrapper').element(hobby_sport).click()
+    hobby_reading: str = '[for = hobbies-checkbox-2]'
+    browser.element('#hobbiesWrapper').element(hobby_reading).click()
     (
-        browser.element("#uploadPicture")
-        .send_keys(os.path.join(ROOT_DIR, "requirements.txt"))
+        browser.element('#hobbiesWrapper')
+        .all('.custom-checkbox')
+        .element_by(have.exact_text('Music')).click()
     )
 
+    browser.element("#uploadPicture").send_keys(resource('corn.jpg'))
+    browser.element("#uploadPicture").perform(upload_resource('athlant.jpg'))
+
     browser.element("#currentAddress").type("Current address")
+
     SET_STATE_OF_NCR: str = '#react-select-3-option-0'
     (
         browser.element("#state")
@@ -78,25 +87,48 @@ def test_student_registration_form():
         .click()
     )
 
-    SET_STATE_OF_DELHI: str = '#react-select-4-option-0'
+    city: str = 'Delhi'
     (
         browser.element("#city")
-        .click()
-        .element(SET_STATE_OF_DELHI)
-        .click()
+        .element('input')
+        .type(city)
+        .press_tab()
     )
     browser.element('#submit').click()
 
+    # Assert
     table_row = browser.element("table").element('tbody').all("tr")
-    table_row[0].all('td')[1].should(have.text('Nick' + ' ' + 'Ivanov'))
-    table_row[1].all('td')[1].should(have.text('a@a.com'))
-    table_row[2].all('td')[1].should(have.text('Male'))
-    table_row[3].all('td')[1].should(have.text('1234567890'))
-    BIRTH_DAY: str = birth_day[:2] + ' ' + NAME_OF_MONTH[birth_day[3:5]] + ',' + birth_day[6:]
-    table_row[4].all('td')[1].should(have.text(BIRTH_DAY))
+    table_row[0].all('td').should(have.exact_texts(
+        'Student Name',
+        'Nick' + ' ' + 'Ivanov'))
 
-    assert table_row[5].all('td').element_by(have.text('Maths')).text == 'Maths'
-    assert table_row[6].all('td').element_by(have.text('Sports')).text == 'Sports'
-    assert table_row[7].all('td').element_by(have.text('requirements.txt')).text == 'requirements.txt'
-    assert table_row[8].all('td').element_by(have.text('Current address')).text == 'Current address'
-    assert table_row[9].all('td').element_by(have.text('NCR Delhi')).text == 'NCR Delhi'
+    table_row[1].all('td')[1].should(have.exact_text('a@a.com'))
+
+    cells_of_row_should_have_texts(2, 'Gender', 'Male')
+
+    cells_of_row_(index=3, should_have_texts=['Mobile', '1234567890'])
+
+    BIRTH_DAY: str = birth_day[:2] + ' ' + NAME_OF_MONTH[birth_day[3:5]] + ',' + birth_day[6:]
+    cells_of_row_(index=4, should_have_texts=['Date of Birth', BIRTH_DAY])
+    cells_of_row_(index=5, should_have_texts=['Subjects', 'Maths, Chemistry'])
+    cells_of_row_(index=6, should_have_texts=['Hobbies', 'Sports, Reading, Music'])
+    cells_of_row_(index=7, should_have_texts=['Picture', 'athlant.jpg'])
+    cells_of_row_(index=8, should_have_texts=['Address', 'Current address'])
+
+    assert get_texts_from_row(9) == f'{"State and City"} {"NCR Delhi"}'
+
+
+def cells_of_row(index: int) -> Collection:
+    return browser.element("table").element('tbody').all("tr")[index].all('td')
+
+
+def cells_of_row_should_have_texts(index: int, *texts1: str):
+    browser.element("table").element('tbody').all("tr")[index].all('td').should(have.exact_texts(*texts1))
+
+
+def cells_of_row_(index: int, should_have_texts: list):
+    browser.element("table").element('tbody').all("tr")[index].all('td').should(have.exact_texts(*should_have_texts))
+
+
+def get_texts_from_row(index: int) -> str:
+    return browser.element("table").element('tbody').all("tr")[index].text
