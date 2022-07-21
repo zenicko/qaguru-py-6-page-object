@@ -60,7 +60,7 @@ def test_student_registration_form():
 
     def autocomplete(selector: str, /, *, from_: str, to: str = None):
         browser.element(selector).type(from_)
-        browser.all('.subjects-auto-complete__option').element_by(have.exact_text(to or to != '' or from_))
+        browser.all('.subjects-auto-complete__option').element_by(have.exact_text(to or to != '' or from_)).click()
 
     autocomplete('#subjectsInput', from_='Ma', to='Maths')
     autocomplete('#subjectsInput', from_='Chem', to='Chemistry')
