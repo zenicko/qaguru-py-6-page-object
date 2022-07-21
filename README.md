@@ -46,8 +46,8 @@
       2. DRY: getting a row by index.
          Created the function `cells_of_row`.
    6. Created the helpers
-      1. Get the path to a file in the resources
-      2. Created the custom command `upload_resourc` for uploading a file
+      1. Get the path to a file in the resources.
+      2. Created the custom command `upload_resourc` for uploading a file.
          
          E.g. 
          ```
@@ -60,11 +60,32 @@
       **Using**
       `assert get_texts_from_row(9) == f'{"State and City"} {"NCR Delhi"}'`
 2. Refactoring the code #2.
-   1. Removed the selector `tbody` from the result table selector
+   1. Removed the selector `tbody` from the result table selector.
    2. Helpers 
-      1. Created the function select `State and City`
-      2. Created the function select `Subjects`
+      1. Created the function select `State and City`.
+      2. Created the function select `Subjects`.
+3. HomeWork #6
+   1. Created the file helper.py (see 1.6) 
+   2. 
+   1. Повторить показанное в уроке, создав PageObject для контрола типа 
+   «Tags Input». Добавить в "шаблон фабрики" 
+   оба способа работы с контролом – через автодополнение по Tab и 
+   выбор из списка предложенных вариантов.
+   2. Реализовать PageObject для контрола «Dropdown с автодополнением», 
+   с возможностью устанавливать значение для поля как через автодополнение 
+   по Tab, так и выбор из списка.
+   3. Реализовать PageObject для контрола DatePicker с возможностью как
+   установить значение в поле ввода явно, так и выбрать нужную дату 
+   из диалога дейтпикера.
+   4. Реализовать PageObject для контрола «Table», использующийся в тесте 
+   для проверки результата подтверждения формы.
 
+Бонусное задание (сдавать в отдельной бренче)
+
+1.2* Вместо PageObject реализовать в отдельном модуле функцию для работы 
+с контролом «Tags Input», которая в зависимости от переданных именованых 
+аргументов будет либо автодополнять введенный текст по Tab, либо выбирать 
+по клику из предложенных в списке.
 
 ## What's new
 1. How click on a hidden button

@@ -1,9 +1,10 @@
-
 from selene.core import command
-from selene.core.entity import Element, Collection
+from selene.core.entity import Element
 from selene.support.conditions import have
 from selene.support.shared import browser
 
+from qaguru_py_6_page_object.controls.select import select_by_choosing, select_by_autocomplete
+from qaguru_py_6_page_object.controls.table import cells_of_row_should_have_texts, cells_of_row_, get_texts_from_row
 from qaguru_py_6_page_object.helpers import resource, upload_resource
 
 NAME_OF_MONTH = {
@@ -59,7 +60,6 @@ def test_student_registration_form():
         .element_by(have.text(str(int(birth_day[:2])))).click()
     )
 
-
     autocomplete('#subjectsInput', from_='Ma', to='Maths')
     autocomplete('#subjectsInput', from_='Chem', to='Chemistry')
 
@@ -87,8 +87,8 @@ def test_student_registration_form():
 
     browser.element("#currentAddress").type("Current address")
 
-    select_by('#state', option='NCR')
-    select_by('#city', option='Delhi')
+    select_by_choosing(browser.element('#state'), option='NCR')
+    select_by_autocomplete(browser.element('#city'), option='Delhi')
 
     '''
     # Like a workaround and KISS style
@@ -133,31 +133,6 @@ def test_student_registration_form():
     assert get_texts_from_row(9) == f'{"State and City"} {"NCR Delhi"}'
 
 
-def cells_of_row(index: int) -> Collection:
-    return browser.element("table").element('tbody').all("tr")[index].all('td')
-
-
-def cells_of_row_should_have_texts(index: int, *texts1: str):
-    browser.element("table").element('tbody').all("tr")[index].all('td').should(have.exact_texts(*texts1))
-
-
-def cells_of_row_(index: int, should_have_texts: list):
-    browser.element("table").element('tbody').all("tr")[index].all('td').should(have.exact_texts(*should_have_texts))
-
-
-def get_texts_from_row(index: int) -> str:
-    return browser.element("table").element('tbody').all("tr")[index].text
-
-
 def autocomplete(selector: str, /, *, from_: str, to: str = None):
     browser.element(selector).type(from_)
     browser.all('.subjects-auto-complete__option').element_by(have.exact_text(to or to != '' or from_)).click()
-
-
-def select_by(selector: str, /, *, option: str):
-    select(browser.element(selector), option=option)
-
-
-def select(element: Element, /, *, option: str):
-    element.perform(command.js.scroll_into_view).click()
-    browser.all('[id^=react-select][id*=-option]').element_by(have.exact_text(option)).click()
