@@ -3,7 +3,7 @@ from selene.core.entity import Element
 from selene.support.conditions import have
 from selene.support.shared import browser
 
-from qaguru_py_6_page_object.controls.select import select_by_choosing, select_by_autocomplete
+from qaguru_py_6_page_object.controls import dropdown
 from qaguru_py_6_page_object.controls.table import cells_of_row_should_have_texts, cells_of_row_, get_texts_from_row
 from qaguru_py_6_page_object.helpers import resource, upload_resource
 
@@ -86,9 +86,19 @@ def test_student_registration_form():
     browser.element("#uploadPicture").perform(upload_resource('athlant.jpg'))
 
     browser.element("#currentAddress").type("Current address")
+    '''
+    # Step 1
+    select.select_by_choosing(browser.element('#state'), option='NCR')
+    select.select_by_autocomplete(browser.element('#city'), option='Delhi')
+    
+    # Step 2
+    select.by_choosing(browser.element('#state'), option='NCR')
+    select.by_autocomplete(browser.element('#city'), option='Delhi')
+    '''
 
-    select_by_choosing(browser.element('#state'), option='NCR')
-    select_by_autocomplete(browser.element('#city'), option='Delhi')
+    dropdown.select(browser.element('#state'), option='NCR')
+    dropdown.autocomplete(browser.element('#city'), option='Delhi')
+
 
     '''
     # Like a workaround and KISS style
