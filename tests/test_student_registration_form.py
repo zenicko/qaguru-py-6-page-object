@@ -58,9 +58,19 @@ def test_student_registration_form():
         .element_by(have.text(str(int(birth_day[:2])))).click()
     )
 
-    browser.element("#subjectsInput").type('Maths').press_enter()
-    browser.element("#subjectsInput").type('Chemistry')
+    def autocomplete(selector: str, /, *, from_: str, to: str = None):
+        browser.element(selector).type(from_)
+        browser.all('.subjects-auto-complete__option').element_by(have.exact_text(to or to != '' or from_))
+
+    autocomplete('#subjectsInput', from_='Ma', to='Maths')
+    autocomplete('#subjectsInput', from_='Chem', to='Chemistry')
+
+    '''
+    # Like a workaround and KISS style
+    browser.element('#subjectsInput').type('Maths').press_enter()
+    browser.element('#subjectsInput').type('Chemistry')
     browser.element('#react-select-2-option-0').click()
+    '''
 
     browser.element('#submit').perform(command.js.scroll_into_view)
 
@@ -79,6 +89,15 @@ def test_student_registration_form():
 
     browser.element("#currentAddress").type("Current address")
 
+    def select_dropdown(selector: str, /, *, option: str):
+        browser.element(selector).click()
+        browser.all('[id^=react-select][id*=option]').element_by(have.exact_text(option)).click()
+
+    select_dropdown('#state', option='NCR')
+    select_dropdown('#city', option='Delhi')
+
+    '''
+    # Like a workaround and KISS style
     SET_STATE_OF_NCR: str = '#react-select-3-option-0'
     (
         browser.element("#state")
@@ -94,6 +113,8 @@ def test_student_registration_form():
         .type(city)
         .press_tab()
     )
+    '''
+
     browser.element('#submit').click()
 
     # Assert

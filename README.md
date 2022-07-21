@@ -30,7 +30,7 @@
 
 
 ## Steps
-1. Refactoring the code.
+1. Refactoring the code #1.
    1. The select control of `state and city`.
    2. The check-box control of `hobbies`.
    
@@ -59,6 +59,12 @@
       
       **Using**
       `assert get_texts_from_row(9) == f'{"State and City"} {"NCR Delhi"}'`
+2. Refactoring the code #2.
+   1. Removed the selector `tbody` from the result table selector
+   2. Helpers 
+      1. Created the function select `State and City`
+      2. Created the function select `Subjects`
+
 
 ## What's new
 1. How click on a hidden button
