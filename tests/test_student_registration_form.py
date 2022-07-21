@@ -1,3 +1,4 @@
+
 from selene.core import command
 from selene.core.entity import Element, Collection
 from selene.support.conditions import have
@@ -58,9 +59,6 @@ def test_student_registration_form():
         .element_by(have.text(str(int(birth_day[:2])))).click()
     )
 
-    def autocomplete(selector: str, /, *, from_: str, to: str = None):
-        browser.element(selector).type(from_)
-        browser.all('.subjects-auto-complete__option').element_by(have.exact_text(to or to != '' or from_)).click()
 
     autocomplete('#subjectsInput', from_='Ma', to='Maths')
     autocomplete('#subjectsInput', from_='Chem', to='Chemistry')
@@ -89,12 +87,8 @@ def test_student_registration_form():
 
     browser.element("#currentAddress").type("Current address")
 
-    def select_dropdown(selector: str, /, *, option: str):
-        browser.element(selector).click()
-        browser.all('[id^=react-select][id*=option]').element_by(have.exact_text(option)).click()
-
-    select_dropdown('#state', option='NCR')
-    select_dropdown('#city', option='Delhi')
+    select_by('#state', option='NCR')
+    select_by('#city', option='Delhi')
 
     '''
     # Like a workaround and KISS style
@@ -153,3 +147,17 @@ def cells_of_row_(index: int, should_have_texts: list):
 
 def get_texts_from_row(index: int) -> str:
     return browser.element("table").element('tbody').all("tr")[index].text
+
+
+def autocomplete(selector: str, /, *, from_: str, to: str = None):
+    browser.element(selector).type(from_)
+    browser.all('.subjects-auto-complete__option').element_by(have.exact_text(to or to != '' or from_)).click()
+
+
+def select_by(selector: str, /, *, option: str):
+    select(browser.element(selector), option=option)
+
+
+def select(element: Element, /, *, option: str):
+    element.perform(command.js.scroll_into_view).click()
+    browser.all('[id^=react-select][id*=-option]').element_by(have.exact_text(option)).click()
