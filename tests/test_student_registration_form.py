@@ -5,6 +5,7 @@ from selene.support.shared import browser
 
 from qaguru_py_6_page_object.controls import dropdown
 from qaguru_py_6_page_object.controls.table import cells_of_row_should_have_texts, cells_of_row_, get_texts_from_row
+from qaguru_py_6_page_object.controls import tags_input
 from qaguru_py_6_page_object.helpers import resource, upload_resource
 
 NAME_OF_MONTH = {
@@ -60,8 +61,8 @@ def test_student_registration_form():
         .element_by(have.text(str(int(birth_day[:2])))).click()
     )
 
-    autocomplete('#subjectsInput', from_='Ma', to='Maths')
-    autocomplete('#subjectsInput', from_='Chem', to='Chemistry')
+    tags_input.add('#subjectsInput', from_='Ma', to='Maths')
+    tags_input.add('#subjectsInput', from_='Chem', to='Chemistry')
 
     '''
     # Like a workaround and KISS style
@@ -86,6 +87,7 @@ def test_student_registration_form():
     browser.element("#uploadPicture").perform(upload_resource('athlant.jpg'))
 
     browser.element("#currentAddress").type("Current address")
+
     '''
     # Step 1
     select.select_by_choosing(browser.element('#state'), option='NCR')
@@ -95,11 +97,8 @@ def test_student_registration_form():
     select.by_choosing(browser.element('#state'), option='NCR')
     select.by_autocomplete(browser.element('#city'), option='Delhi')
     '''
-
     dropdown.select(browser.element('#state'), option='NCR')
     dropdown.autocomplete(browser.element('#city'), option='Delhi')
-
-
     '''
     # Like a workaround and KISS style
     SET_STATE_OF_NCR: str = '#react-select-3-option-0'
@@ -141,8 +140,3 @@ def test_student_registration_form():
     cells_of_row_(index=8, should_have_texts=['Address', 'Current address'])
 
     assert get_texts_from_row(9) == f'{"State and City"} {"NCR Delhi"}'
-
-
-def autocomplete(selector: str, /, *, from_: str, to: str = None):
-    browser.element(selector).type(from_)
-    browser.all('.subjects-auto-complete__option').element_by(have.exact_text(to or to != '' or from_)).click()

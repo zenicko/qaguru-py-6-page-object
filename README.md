@@ -65,7 +65,7 @@
       1. Created the function select `State and City`.
       2. Created the function select `Subjects`.
 3. HomeWork #6
-   1. Created the file helper.py (see 1.6) 
+   1. Created the file helper.py (see 1.6) DONE
    2. 
    1. Повторить показанное в уроке, создав PageObject для контрола типа 
    «Tags Input». Добавить в "шаблон фабрики" 
