@@ -61,8 +61,19 @@ def test_student_registration_form():
         .element_by(have.text(str(int(birth_day[:2])))).click()
     )
 
-    tags_input.add('#subjectsInput', from_='Ma', to='Maths')
-    tags_input.add('#subjectsInput', from_='Chem', to='Chemistry')
+    subject = browser.element('#subjectsInput')
+    tags_input.add(subject, from_='Ma', to='Maths')
+    tags_input.add(subject, from_='Chem', to='Chemistry')
+    '''
+    # Variable style
+    subject = browser.element('#subjectsInput')
+    tags_input.add(subject, from_='Ma', to='Maths')
+    tags_input.add(subject, from_='Chem', to='Chemistry')
+    
+    # Straight style
+    tags_input.add(browser.element('#subjectsInput'), from_='Ma', to='Maths')
+    tags_input.add(browser.element('#subjectsInput'), from_='Chem', to='Chemistry')
+    '''
 
     '''
     # Like a workaround and KISS style

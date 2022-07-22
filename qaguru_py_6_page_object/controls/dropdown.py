@@ -23,3 +23,5 @@ def select(element: Element, /, *, option: str):
 
 def autocomplete(element: Element, /, *, option: str):
     element.element('input').send_keys(option).press_enter()
+
+
