@@ -61,9 +61,10 @@ def test_student_registration_form():
         .element_by(have.text(str(int(birth_day[:2])))).click()
     )
 
-    subject = browser.element('#subjectsInput')
-    tags_input.add(subject, from_='Ma', to='Maths')
-    tags_input.add(subject, from_='Chem', to='Chemistry')
+    tags_input.subject = browser.element('#subjectsInput')
+    tags_input.add('Ma', autocomplete='Maths')
+    tags_input.add('Chemistry')
+
     '''
     # Variable style
     subject = browser.element('#subjectsInput')
