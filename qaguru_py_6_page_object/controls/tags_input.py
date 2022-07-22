@@ -1,9 +1,11 @@
-from selene.core.entity import Element
+from selene.core.entity import SeleneElement
 from selene.support.conditions import have
 from selene.support.shared import browser
 
+subject: SeleneElement = ...
 
-def add(element: Element, /, *, from_: str, to: str = None):
+
+def add(element: SeleneElement, /, *, from_: str, to: str = None):
     element.type(from_)
     (
         browser
