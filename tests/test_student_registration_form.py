@@ -3,7 +3,8 @@ from selene.core.entity import Element
 from selene.support.conditions import have
 from selene.support.shared import browser
 
-from qaguru_py_6_page_object.controls import dropdown
+from qaguru_py_6_page_object.controls import dropdown_
+from qaguru_py_6_page_object.controls.dropdown import DropDown
 from qaguru_py_6_page_object.controls.table import cells_of_row_should_have_texts, cells_of_row_, get_texts_from_row
 from qaguru_py_6_page_object.controls.tags_input import TagsInput
 from qaguru_py_6_page_object.helpers import resource, upload_resource
@@ -110,8 +111,8 @@ def test_student_registration_form():
     select.by_autocomplete(browser.element('#city'), option='Delhi')
     '''
 
-    dropdown.select(browser.element('#state'), option='NCR')
-    dropdown.autocomplete(browser.element('#city'), option='Delhi')
+    DropDown(browser.element('#state')).select('NCR')
+    DropDown(browser.element('#city')).autocomplete('Delhi')
     '''
     # Like a workaround and KISS style
     SET_STATE_OF_NCR: str = '#react-select-3-option-0'

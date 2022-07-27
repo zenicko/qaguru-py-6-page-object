@@ -69,9 +69,7 @@
    2. PageObject
       1. Created class TagsInput for the "Subject" element. 
          Added two methods: add and autocomplete.
-      2. Реализовать PageObject для контрола «Dropdown с автодополнением», 
-         с возможностью устанавливать значение для поля как через автодополнение 
-         по Tab, так и выбор из списка.
+      2. Created class DropDown for the elements "State and City". 
       3. Реализовать PageObject для контрола DatePicker с возможностью как
          установить значение в поле ввода явно, так и выбрать нужную дату 
          из диалога дейтпикера.
