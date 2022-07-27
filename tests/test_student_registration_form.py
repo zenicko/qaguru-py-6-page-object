@@ -5,7 +5,7 @@ from selene.support.shared import browser
 
 from qaguru_py_6_page_object.controls import dropdown
 from qaguru_py_6_page_object.controls.table import cells_of_row_should_have_texts, cells_of_row_, get_texts_from_row
-from qaguru_py_6_page_object.controls import tags_input
+from qaguru_py_6_page_object.controls.tags_input import TagsInput
 from qaguru_py_6_page_object.helpers import resource, upload_resource
 
 NAME_OF_MONTH = {
@@ -61,9 +61,9 @@ def test_student_registration_form():
         .element_by(have.text(str(int(birth_day[:2])))).click()
     )
 
-    tags_input.subject = browser.element('#subjectsInput')
-    tags_input.add('Ma', autocomplete='Maths')
-    tags_input.add('Chemistry')
+    subject = TagsInput(browser.element('#subjectsInput'))
+    subject.add('Ma', autocomplete='Maths')
+    subject.autocomplete('Chemistry')
 
     '''
     # Variable style
@@ -109,6 +109,7 @@ def test_student_registration_form():
     select.by_choosing(browser.element('#state'), option='NCR')
     select.by_autocomplete(browser.element('#city'), option='Delhi')
     '''
+
     dropdown.select(browser.element('#state'), option='NCR')
     dropdown.autocomplete(browser.element('#city'), option='Delhi')
     '''
