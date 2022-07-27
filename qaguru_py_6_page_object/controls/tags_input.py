@@ -1,8 +1,8 @@
-from selene.core.entity import SeleneElement
+from selene.core.entity import Element
 from selene.support.conditions import have
 from selene.support.shared import browser
 
-subject: SeleneElement = ...
+subject: Element = ...
 
 
 def add(from_: str, /, *, autocomplete: str = None):
