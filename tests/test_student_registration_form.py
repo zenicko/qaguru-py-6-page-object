@@ -1,32 +1,17 @@
 from selene.core import command
-from selene.core.entity import Element
 from selene.support.conditions import have
 from selene.support.shared import browser
 
-from qaguru_py_6_page_object.controls import dropdown_
+from qaguru_py_6_page_object.controls import calendar
+from qaguru_py_6_page_object.controls.calendar import Calendar
 from qaguru_py_6_page_object.controls.dropdown import DropDown
 from qaguru_py_6_page_object.controls.table import cells_of_row_should_have_texts, cells_of_row_, get_texts_from_row
 from qaguru_py_6_page_object.controls.tags_input import TagsInput
 from qaguru_py_6_page_object.helpers import resource, upload_resource
 
-NAME_OF_MONTH = {
-    "01": "January",
-    "02": "February",
-    "03": "March",
-    "04": "April",
-    "05": "May",
-    "06": "June",
-    "07": "July",
-    "08": "August",
-    "09": "September",
-    "10": "October",
-    "11": "November",
-    "12": "December"
-}
-
 
 def test_student_registration_form():
-    birth_day: str = "01.09.2000"
+    birth_day: str = '01.09.2000'
     browser.open('/automation-practice-form')
 
     browser.element('#firstName').type('Nick')
@@ -37,30 +22,11 @@ def test_student_registration_form():
     browser.element(GENDER_MALE).click()
 
     browser.element("#userNumber").type("1234567890")
-
-    browser.element('#dateOfBirthInput').click()
-    calendar: Element = browser.element(".react-datepicker")
-
-    calendar.element(".react-datepicker__month-select").click()
-    (
-        calendar.element(".react-datepicker__month-select")
-        .all('option')[int(birth_day[3:5]) - 1].click()
-    )
-
-    calendar.element(".react-datepicker__year-select").click()
-    (
-        calendar.element(".react-datepicker__year-select")
-        .all('option')
-        .filtered_by(have.text(birth_day[6:]))
-        .first.click()
-    )
-    calendar.element(".react-datepicker__year-select").click()
-
-    (
-        calendar.element(".react-datepicker__month")
-        .all(".react-datepicker__day:not(.react-datepicker__day--outside-month)")
-        .element_by(have.text(str(int(birth_day[:2])))).click()
-    )
+    Calendar(browser.element('#dateOfBirthInput')).year('2000').month('09').day('01')
+    '''
+    # OR the straight path
+    Calendar(browser.element('#dateOfBirthInput'), date_of_birth=birth_day)
+    '''
 
     subject = TagsInput(browser.element('#subjectsInput'))
     subject.add('Ma', autocomplete='Maths')
@@ -146,7 +112,7 @@ def test_student_registration_form():
 
     cells_of_row_(index=3, should_have_texts=['Mobile', '1234567890'])
 
-    BIRTH_DAY: str = birth_day[:2] + ' ' + NAME_OF_MONTH[birth_day[3:5]] + ',' + birth_day[6:]
+    BIRTH_DAY: str = birth_day[:2] + ' ' + calendar.NAME_OF_MONTH[birth_day[3:5]][0] + ',' + birth_day[6:]
     cells_of_row_(index=4, should_have_texts=['Date of Birth', BIRTH_DAY])
     cells_of_row_(index=5, should_have_texts=['Subjects', 'Maths, Chemistry'])
     cells_of_row_(index=6, should_have_texts=['Hobbies', 'Sports, Reading, Music'])
