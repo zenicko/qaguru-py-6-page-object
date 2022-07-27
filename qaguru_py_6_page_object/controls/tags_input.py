@@ -10,6 +10,6 @@ def add(from_: str, /, *, autocomplete: str = None):
     (
         browser
         .all('.subjects-auto-complete__option')
-        .element_by(have.exact_text(autocomplete or autocomplete != '' or from_))
+        .element_by(have.exact_text(from_ if not autocomplete or autocomplete == '' else autocomplete))
         .click()
     )
