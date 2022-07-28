@@ -2,13 +2,12 @@ from selene.core import command
 from selene.support.conditions import have
 from selene.support.shared import browser
 
-from qaguru_py_6_page_object.controls import calendar
+from qaguru_py_6_page_object.controls import calendar, tags_input_advanced
 from qaguru_py_6_page_object.controls.calendar import Calendar
 from qaguru_py_6_page_object.controls.dropdown import DropDown
 from qaguru_py_6_page_object.controls.table import Table
-from qaguru_py_6_page_object.controls.table_ import cells_of_row_should_have_texts, cells_of_row_, get_texts_from_row
-from qaguru_py_6_page_object.controls.tags_input import TagsInput
 from qaguru_py_6_page_object.helpers import resource, upload_resource
+
 
 
 def test_student_registration_form():
@@ -28,10 +27,16 @@ def test_student_registration_form():
     # OR the straight path
     Calendar(browser.element('#dateOfBirthInput'), date_of_birth=birth_day)
     '''
+    tags_input_advanced.subject = browser.element('#subjectsInput')
+    tags_input_advanced.set_subject(name='Maths', by_autocomplete=True)
+    tags_input_advanced.set_subject(name='Chemistry', by_autocomplete=False)
 
+    '''
+    OR The POM style
     subject = TagsInput(browser.element('#subjectsInput'))
     subject.add('Ma', autocomplete='Maths')
     subject.autocomplete('Chemistry')
+    '''
 
     '''
     # Variable style
