@@ -34,12 +34,13 @@
    1. The select control of `state and city`.
    2. The check-box control of `hobbies`.
    
-      Added the selection of all hobbies by using the selector .
+      Added the selection of all hobbies by using the selector
       and the exact hobby name.
    3. The subjects container of `Subjects`.
    
       Added the two ways of selections of subjects: press_enter() and click().
    4. The drop-down control for `City`.
+   
       Changed the way of typing value. Used the function `type()`.
    5. Updated the check of the field `Student Name`. 
       1. Used the multi-checking fields (label, value) in the row `Student Name`.
@@ -68,10 +69,11 @@
    1. Created the file helper.py (see 1.6) 
    2. PageObject
       1. Created class TagsInput for the "Subject" element. 
-         Added two methods: add and autocomplete.
-      2. Created class DropDown for the elements 'State and City'. 
-      3. Created class Calendar for the element 'Date of Birth'.
-      4. Created class Table. Maked the chain for the methods.  
+         
+         Added two methods: `add` and `autocomplete`.
+      3. Created class DropDown for the elements 'State and City'. 
+      4. Created class Calendar for the element 'Date of Birth'.
+      5. Created class Table. Made the chain for the methods.  
      
 
 Бонусное задание (сдавать в отдельной бренче)
