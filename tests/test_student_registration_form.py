@@ -5,7 +5,8 @@ from selene.support.shared import browser
 from qaguru_py_6_page_object.controls import calendar
 from qaguru_py_6_page_object.controls.calendar import Calendar
 from qaguru_py_6_page_object.controls.dropdown import DropDown
-from qaguru_py_6_page_object.controls.table import cells_of_row_should_have_texts, cells_of_row_, get_texts_from_row
+from qaguru_py_6_page_object.controls.table import Table
+from qaguru_py_6_page_object.controls.table_ import cells_of_row_should_have_texts, cells_of_row_, get_texts_from_row
 from qaguru_py_6_page_object.controls.tags_input import TagsInput
 from qaguru_py_6_page_object.helpers import resource, upload_resource
 
@@ -101,6 +102,24 @@ def test_student_registration_form():
     browser.element('#submit').click()
 
     # Assert
+    result_table = Table(browser.element("table").element('tbody'))
+    result_table.row(0).should_have_exact_texts(['Student Name', 'Nick' + ' ' + 'Ivanov'])
+    result_table.row(1).should_have_exact_texts(['Student Email', 'a@a.com'])
+    result_table.row(2).should_have_exact_texts(['Gender', 'Male'])
+    result_table.row(3).should_have_exact_texts(['Mobile', '1234567890'])
+
+    BIRTH_DAY: str = birth_day[:2] + ' ' + calendar.NAME_OF_MONTH[birth_day[3:5]][0] + ',' + birth_day[6:]
+    result_table.row(4).should_have_exact_texts(['Date of Birth', BIRTH_DAY])
+
+    result_table.row(5).should_have_exact_texts(['Subjects', 'Maths, Chemistry'])
+    result_table.row(6).should_have_exact_texts(['Hobbies', 'Sports, Reading, Music'])
+    result_table.row(7).should_have_exact_texts(['Picture', 'athlant.jpg'])
+    result_table.row(8).should_have_exact_texts(['Address', 'Current address'])
+    result_table.row(9).should_have_exact_texts(['State and City', 'NCR Delhi'])
+
+    '''
+    OR The straight path
+    
     table_row = browser.element("table").element('tbody').all("tr")
     table_row[0].all('td').should(have.exact_texts(
         'Student Name',
@@ -119,4 +138,5 @@ def test_student_registration_form():
     cells_of_row_(index=7, should_have_texts=['Picture', 'athlant.jpg'])
     cells_of_row_(index=8, should_have_texts=['Address', 'Current address'])
 
-    assert get_texts_from_row(9) == f'{"State and City"} {"NCR Delhi"}'
+    assert get_texts_from_row(9) == f'{"State and City"} {"NCR Delhi"}
+    '''

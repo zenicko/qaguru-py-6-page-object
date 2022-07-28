@@ -71,8 +71,7 @@
          Added two methods: add and autocomplete.
       2. Created class DropDown for the elements 'State and City'. 
       3. Created class Calendar for the element 'Date of Birth'.
-      4. Реализовать PageObject для контрола «Table», использующийся в тесте 
-         для проверки результата подтверждения формы.
+      4. Created class Table. Maked the chain for the methods.  
      
 
 Бонусное задание (сдавать в отдельной бренче)
